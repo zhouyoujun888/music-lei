@@ -47,6 +47,5 @@ const playlist = [
         src: 'audio/天空之城.mp3',
         cover: 'images/李志4.jpg',
         background: 'images/李志4.jpg'
-    },
- 
+    }
 ];
