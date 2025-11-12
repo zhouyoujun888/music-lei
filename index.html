@@ -1,403 +1,90 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <title>音乐播放器</title>
-  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      height: 100vh;
-    }
-    .cover{
-      position: absolute;
-      content:'';
-      display: block;
-      width: 100%;
-      height: 100%;
-      background: url(http://cloud.hunger-valley.com/17-9-22/87786461.jpg)  center center no-repeat;
-      background-size: cover;
-      filter: blur(5px);
-    }
-    .musicbox {
-      position: absolute;
-      left: 50%;
-      top: 40%;
-      transform: translate(-50%, -50%);
-      font-family: cursive;
-      font-size: 16px;
-      color: #f06d6a;
-      width: 340px;
-    }
-    .music-panel {
-      border: 1px solid #76dba3;
-      padding: 20px 20px 5px 20px;
-      box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1), 0px 2px 10px 0px rgba(0, 0, 0, 0.05);
-      background-color: rgba(255, 255, 255, 0.9);
-    }    
-    .musicbox .control {
-      margin-top: 20px;
-      font-size: 22px;
-      color: #ee8a87;
-      float: left;
-    }
-    
-    .musicbox .control .fa {
-      margin-right: 12px;
-      cursor: pointer;
-    }
-    
-    .musicbox .control .fa.disable {
-      opacity: 0.3;
-    }
-    
-    .musicbox .info {
-      margin-left: 120px;
-    }
-    
-    .musicbox .info .title {
-      font-size: 18px;
-    }
-    
-    .musicbox .info .auther {
-      font-size: 13px;
-    }
-    
-    .musicbox .progress {
-      width: 260px;
-    }
-    
-    .musicbox .progress .bar {
-      height: 3px;
-      margin-top: 5px;
-      background-color: rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-    }
-    
-    .musicbox .progress .progress-now {
-      background-color: #ee8a87;
-      height: 3px;
-      width: 0;
-      position: relative;
-    }
-    
-    .musicbox .time {
-      text-align: right;
-    }
-    
-    .musicbox:after,
-    .musicbox .music:after {
-      content: '';
-      display: block;
-      clear: both;
-    }
-
-    .musicbox .list{
-      list-style: none;
-    }
-    .musicbox .list>li{
-      position: relative;
-      padding: 4px 10px;
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      border-top: none;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    .musicbox .list>li:hover {
-      background-color: rgba(255,255, 255,0.5);
-    }
-    .musicbox .list>li.playing:before{
-      position: absolute;
-      top: 0;
-      left: 0;
-      content:'';
-      display: inline-block;
-      width: 8px;
-      height: 30px;
-      background: rgba(255, 255, 255, 0.8);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐播放器</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-  <div class="cover"></div>
-  <div class="musicbox">
-    <div class="music-panel">
-      <div class="music">
-        <div class="control">
-          <span class="back"><i class="fa fa-step-backward"></i></span>
-          <span class="play"><i class="fa fa-pause"></i></span>
-          <span class="forward"><i class="fa fa-step-forward"></i></span>
+    <div class="music-player">
+        <div class="player-container">
+            <!-- 专辑封面 -->
+        <div class="album-cover">
+            <div class="ripple-effect"></div>
+            <img src="" alt="专辑封面" id="album-img">
         </div>
-        <div class="info">
-          <div class="title">My song</div>
-          <div class="auther">ruoyu</div>
+            
+            <!-- 歌曲信息 -->
+            <div class="song-info">
+                <h2 id="song-title">歌曲名称</h2>
+                <p id="song-artist">艺术家</p>
+            </div>
+            
+            <!-- 进度条 -->
+            <div class="progress-container">
+                <span id="current-time">00:00</span>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                    <div class="progress-handle"></div>
+                </div>
+                <span id="total-time">00:00</span>
+            </div>
+            
+            <!-- 控制按钮 -->
+            <div class="controls">
+                <button class="control-btn" id="loop-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                </button>
+                <button class="control-btn" id="prev-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="19 3 5 12 19 21"></polygon>
+                        <path d="M5 12h13"></path>
+                    </svg>
+                </button>
+                <button class="control-btn play-btn" id="play-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                </button>
+                <button class="control-btn" id="next-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21"></polygon>
+                        <path d="M19 12H5"></path>
+                    </svg>
+                </button>
+                <button class="control-btn" id="volume-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- 音量控制 -->
+            <div class="volume-container">
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.7">
+            </div>
+            
+            <!-- 播放列表 -->
+            <div class="playlist-container">
+                <h3>播放列表</h3>
+                <ul class="playlist" id="playlist">
+                    <!-- 播放列表项将通过JavaScript动态生成 -->
+                </ul>
+            </div>
         </div>
-      </div>
-
-      <div class="progress">
-        <div class="bar">
-          <div class="progress-total"></div>
-          <div class="progress-now"></div>
-        </div>
-        <div class="time">0:00</div>
-      </div>      
     </div>
-    <ul class="list">
-      <!-- <li>贰佰-玫瑰</li> -->
-    </ul>
-
-  </div>
-
-
-  <script>
-
-/*
-    var musicList = []
-    var currentIndex = 0
-    var clock
-    var audio = new Audio()
-    audio.autoplay = true
-
-    getMusicList(function(list){
-      musicList = list
-      loadMusic(list[currentIndex])
-      generateList(list)
-    })
-
-
-
-    audio.ontimeupdate = function(){
-      $('.musicbox .progress-now').style.width = (this.currentTime/this.duration)*100 + '%'
-    }
-
-    audio.onplay = function(){
-      clock = setInterval(function(){
-        var min = Math.floor(audio.currentTime/60)
-        var sec = Math.floor(audio.currentTime)%60 + ''
-        sec = sec.length === 2? sec : '0' + sec
-        $('.musicbox .time').innerText = min + ':' + sec
-      }, 1000)
-
-    }
-
-
-    audio.onpause = function(){
-      clearInterval(clock)
-    }
-    audio.onended = function(){
-      console.log('end')
-      currentIndex =  (++currentIndex)%musicList.length
-      loadMusic(musicList[currentIndex])   
-    }
-
-    $('.musicbox .play').onclick = function(){
-      if(audio.paused){
-        audio.play()
-        this.querySelector('.fa').classList.remove('fa-play')
-        this.querySelector('.fa').classList.add('fa-pause')
-      }else {
-        audio.pause()
-        this.querySelector('.fa').classList.add('fa-play')
-        this.querySelector('.fa').classList.remove('fa-pause')
-      }
-    }
-
-    $('.musicbox .forward').onclick = function(){
-      currentIndex =  (++currentIndex)%musicList.length
-      loadMusic(musicList[currentIndex])
-    }
-
-    $('.musicbox .back').onclick = function(){
-      currentIndex =  (musicList.length + --currentIndex)%musicList.length
-      loadMusic(musicList[currentIndex])
-    }
-
-    $('.musicbox .bar').onclick = function(e){
-      console.log(e)
-      var percent = e.offsetX / parseInt(getComputedStyle(this).width)
-      console.log(percent)
-      audio.currentTime = audio.duration * percent
-    }
-
-
-    function $(selector){
-      return document.querySelector(selector)
-    }
-
-    function getMusicList(callback){
-      var xhr = new XMLHttpRequest()
-      xhr.open('GET', '/music.json', true)
-      xhr.onload = function(){
-        if((xhr.status >=200 && xhr.status < 300) || xhr.status === 304){
-          callback(JSON.parse(this.responseText))
-        }else {
-          console.log('获取数据失败')
-        }
-      }
-      xhr.onerror = function(){
-        console.log('网络异常')
-      }
-      xhr.send()
-    }
-
-    function loadMusic(musicObj){
-      console.log('begin play ', musicObj)
-      $('.musicbox .title').innerText = musicObj.title
-      $('.musicbox .auther').innerText = musicObj.auther
-      $('.cover').style.backgroundImage = 'url(' + musicObj.img + ')'
-      audio.src = musicObj.src
-    }
-
-    function generateList(list){
-
-    }
-
-
-
-*/
-
-
-
-
-
-
-
     
-
-    var cover = document.querySelector('.cover')
-    var backBtn = document.querySelector('.musicbox .back')
-    var playBtn = document.querySelector('.musicbox .play')
-    var forwardBtn = document.querySelector('.musicbox .forward')
-    var titleNode = document.querySelector('.musicbox .title')
-    var authorNode = document.querySelector('.musicbox .auther')
-    var timeNode = document.querySelector('.musicbox .time')
-    var progressBarNode = document.querySelector('.musicbox .progress .bar')
-    var progressNowNode = document.querySelector('.musicbox .progress-now')
-    var musicListContainer = document.querySelector('.musicbox .list')
-    var timer
-    var musicList
-
-    var music = new Audio()
-    music.autoplay = true
-    var musicIndex = 0
-
-    getMusic(function(list){
-      musicList = list
-      setPlaylist(list)
-      loadMusic(list[musicIndex])
-    })
+    <!-- 音频元素 -->
+    <audio id="audio-player" preload="metadata"></audio>
     
-
-    playBtn.onclick = function() {
-      var icon = this.querySelector('.fa')
-      if (icon.classList.contains('fa-play')) {
-        music.play()
-      } else {
-        music.pause()
-      }
-      icon.classList.toggle('fa-play')
-      icon.classList.toggle('fa-pause')
-    }
-
-    forwardBtn.onclick = loadNextMusic
-    backBtn.onclick = loadLastMusic
-    music.onended = loadNextMusic
-    music.shouldUpdate = true
-
-
-    music.onplaying = function() {
-      timer = setInterval(function() {
-        updateProgress()
-      }, 1000)
-      console.log('play')
-    }
-    music.onpause = function() {
-        console.log('pause')
-        clearInterval(timer)
-      }
-
-    music.ontimeupdate = updateProgress
-
-    progressBarNode.onclick = function(e) {
-      var percent = e.offsetX / parseInt(getComputedStyle(this).width)
-      music.currentTime = percent * music.duration
-      progressNowNode.style.width = percent * 100 + "%"
-    }
-
-    musicListContainer.onclick = function(e){
-      if(e.target.tagName.toLowerCase() === 'li'){
-        for(var i = 0; i < this.children.length; i++){
-          if(this.children[i] === e.target){
-            musicIndex = i
-          }
-        }
-        console.log(musicIndex)
-        loadMusic(musicList[musicIndex])
-      }
-    }
-    //fa-li fa fa-spinner fa-spin
-
-
-    function setPlaylist(musiclist){
-      var container = document.createDocumentFragment()
-      musiclist.forEach(function(musicObj){
-        var node = document.createElement('li')
-        node.innerText = musicObj.auther + '-' + musicObj.title
-        console.log(node)
-        container.appendChild(node)
-      })
-      musicListContainer.appendChild(container)
-    }
-
-    function loadMusic(songObj) {
-      music.src = songObj.src
-      titleNode.innerText = songObj.title
-      authorNode.innerText = songObj.auther
-      cover.style.backgroundImage = 'url(' + songObj.img + ')'
-      for(var i = 0; i < musicListContainer.children.length; i++){
-        musicListContainer.children[i].classList.remove('playing')
-      }
-      musicListContainer.children[musicIndex].classList.add('playing')
-    }
-
-    function loadNextMusic() {
-      musicIndex++
-      musicIndex = musicIndex % musicList.length
-      loadMusic(musicList[musicIndex])
-    }
-
-    function loadLastMusic() {
-      musicIndex--
-      musicIndex = (musicIndex + musicList.length) % musicList.length
-      loadMusic(musicList[musicIndex])
-    }
-
-    function updateProgress() {
-      var percent = (music.currentTime / music.duration) * 100 + '%'
-      progressNowNode.style.width = percent
-
-      var minutes = parseInt(music.currentTime / 60)
-      var seconds = parseInt(music.currentTime % 60) + ''
-      seconds = seconds.length == 2 ? seconds : '0' + seconds
-      timeNode.innerText = minutes + ':' + seconds
-    }
-
-    function getMusic(callback) {
-      var xhr = new XMLHttpRequest()
-      xhr.open('get', 'music.json', true)
-      xhr.send()
-      xhr.onload = function() {
-        if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
-          callback(JSON.parse(xhr.responseText))
-        }
-      }
-    }
-  </script>
+    <script src="js/data.js"></script>
+    <script src="js/player.js"></script>
 </body>
-
 </html>

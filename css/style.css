@@ -1,0 +1,1087 @@
+/* CSS变量系统 - 确保设计一致性和易用性 */
+:root {
+    /* 主色调 */
+    --primary-color: #1db954;
+    --primary-light: #1ed760;
+    --primary-dark: #16a34a;
+    
+    /* 背景色 */
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-card: rgba(30, 30, 30, 0.85);
+    --bg-hover: rgba(255, 255, 255, 0.1);
+    --bg-active: rgba(29, 185, 84, 0.2);
+    
+    /* 文字颜色 */
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --text-muted: #878787;
+    
+    /* 边框和阴影 */
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.4);
+    
+    /* 尺寸变量 - 桌面和大屏幕设备 */
+    --player-width: 420px;
+    --player-padding: 36px 28px;
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 16px;
+    --control-btn-size: 44px;
+    --play-btn-size: 60px;
+    --progress-height: 4px;
+    --volume-height: 3px;
+    --handle-size: 12px;
+    --volume-handle-size: 10px;
+    
+    /* 间距变量 */
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    
+    /* 动画过渡 */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 全局样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 全局过渡动画设置 */
+* {
+    transition-property: none;
+}
+
+/* 为特定元素启用过渡 */
+.music-player,
+.album-cover,
+.song-info,
+.progress,
+.progress-bar,
+.control-btn,
+.play-btn,
+#volume-slider,
+#volume-slider::before,
+.playlist li,
+#song-title,
+#song-artist,
+#current-time,
+#total-time {
+    transition-property: all;
+    transition-timing-function: var(--transition-normal);
+}
+
+/* 页面加载动画 */
+@keyframes pageLoad {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+body {
+    animation: pageLoad 0.6s ease-out;
+}
+
+/* 全局字体优化 */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* 添加微妙的全局背景纹理 */
+    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 2px, transparent 2px);
+    background-size: 30px 30px;
+}
+
+/* 音乐播放器容器 - 现代深色主题 */
+.music-player {
+    width: 100%;
+    max-width: var(--player-width);
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: var(--player-padding);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    /* 添加玻璃态效果的细微光晕 */
+    /* 确保播放器在移动设备上有足够的触摸区域 */
+    touch-action: manipulation;
+}
+
+.music-player::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(120deg, transparent 0%, rgba(29, 185, 84, 0.05) 100%);
+    pointer-events: none;
+    opacity: 0.3;
+    z-index: 0;
+}
+
+.music-player:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 35px 70px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* 背景图 - 更现代的视觉处理 */
+.music-player::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../images/background.jpg.svg') center/cover no-repeat;
+    opacity: 0.12;
+    z-index: 0;
+    filter: saturate(1.2) contrast(0.9);
+}
+
+.player-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* 专辑封面 - 真实CD设计 */
+.album-cover {
+    width: 70%;
+    aspect-ratio: 1;
+    position: relative;
+    margin: 0 auto 36px;
+    border-radius: 50%; /* 圆形设计，更像CD */
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* 添加CD边缘光晕效果 */
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.05) 0%, 
+        rgba(255, 255, 255, 0.1) 50%, 
+        rgba(255, 255, 255, 0.05) 100%);
+}
+
+/* 专辑封面图片样式 - CD光盘效果 */
+.album-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* 添加轻微阴影，增强立体感 */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    /* 添加CD纹理效果 */
+    background: linear-gradient(90deg, 
+        rgba(0, 0, 0, 0.02) 0%, 
+        rgba(0, 0, 0, 0.05) 50%, 
+        rgba(0, 0, 0, 0.02) 100%);
+}
+
+/* CD中心孔 - 真实CD效果 */
+.album-cover::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14%;
+    height: 14%;
+    /* 更真实的CD中心设计，添加透明度 */
+    background: 
+        radial-gradient(circle, 
+            rgba(255, 255, 255, 0.9) 0%, 
+            rgba(224, 224, 224, 0.8) 10%, 
+            rgba(51, 51, 51, 0.7) 15%, 
+            rgba(34, 34, 34, 0.8) 35%, 
+            rgba(17, 17, 17, 0.9) 70%, 
+            rgba(0, 0, 0, 0.95) 100%),
+        /* 添加CD中心的金属质感 */
+        linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.2) 0%, 
+            transparent 50%, 
+            rgba(0, 0, 0, 0.2) 100%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    box-shadow: 
+        0 0 10px rgba(0, 0, 0, 0.5), 
+        inset 0 0 5px rgba(0, 0, 0, 0.5),
+        0 0 2px rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    /* 添加CD中心的反光效果 */
+    background-blend-mode: overlay;
+}
+
+/* CD反光效果 - 模拟光盘表面的光线反射 */
+.album-cover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.03) 30%, 
+        rgba(255, 255, 255, 0.05) 50%, 
+        rgba(255, 255, 255, 0.03) 70%, 
+        transparent 100%);
+    transform: rotate(45deg);
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* 播放状态下的反光动画 */
+.album-cover.playing::after {
+    animation: cdReflect 10s linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes cdReflect {
+    0% {
+        transform: rotate(45deg);
+        opacity: 0.5;
+    }
+    25% {
+        opacity: 0.8;
+    }
+    75% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: rotate(405deg);
+        opacity: 0.5;
+    }
+}
+
+/* 专辑封面播放状态旋转动画 - 真实CD旋转效果 */
+.album-cover.playing img {
+    /* 最自然的CD旋转速度 - 减慢至8秒一圈，完美模拟LP唱片的缓慢优雅旋转 */
+    animation: rotateRecord 8s linear infinite;
+    transform-origin: center;
+    /* 使用完全线性的动画，确保旋转均匀流畅 */
+    animation-timing-function: linear;
+}
+
+/* 确保暂停时停止旋转 */
+.album-cover img {
+    animation: none;
+}
+
+/* 确保无论是否播放，专辑封面的3D效果和位置保持一致 */
+.album-cover {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.album-cover img {
+    /* 移除可能的额外transform，只保留translate定位 */
+    /* 确保没有额外的transform影响位置 */
+    /* 添加微妙的景深效果 */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3), 
+                inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 确保动画平滑过渡，避免突然停止 */
+.album-cover img {
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* 添加CD纹理效果 */
+    background-image: 
+        radial-gradient(circle at center, transparent 15%, rgba(0,0,0,0.03) 15%, rgba(0,0,0,0.03) 16%, transparent 16%, transparent 18%, rgba(0,0,0,0.02) 18%, rgba(0,0,0,0.02) 19%, transparent 19%, transparent 22%, rgba(0,0,0,0.02) 22%, rgba(0,0,0,0.02) 23%, transparent 23%),
+        repeating-radial-gradient(circle at center, transparent 0%, transparent 1px, rgba(0,0,0,0.01) 1px, rgba(0,0,0,0.01) 2px);
+    background-blend-mode: overlay;
+}
+
+@keyframes rotateRecord {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* 专辑封面播放状态波纹效果 - 使用额外的伪元素 */
+.album-cover .ripple-effect {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    background: rgba(29, 185, 84, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s ease, opacity 0.6s ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.album-cover.playing .ripple-effect {
+    transform: translate(-50%, -50%) scale(8);
+    opacity: 0;
+    animation: pulseEffect 2s infinite;
+    /* 增加动画延迟，避免与旋转同时开始 */
+    animation-delay: 0.3s;
+}
+
+@keyframes pulseEffect {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.5;
+    }
+    70% {
+        transform: translate(-50%, -50%) scale(8);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+}
+
+.album-cover:hover {
+    transform: translateY(-6px) scale(1.03);
+}
+
+.album-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s ease;
+}
+
+.album-cover:hover img {
+    filter: brightness(1.05);
+}
+
+/* 歌曲信息 - 优化字体显示 */
+.song-info {
+    text-align: center;
+    margin-bottom: 28px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 16px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* 歌曲标题 - 重点突出 */
+#song-title {
+    font-size: clamp(1.5rem, 4vw, 1.75rem);
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: color 0.2s ease;
+}
+
+/* 歌曲艺术家 - 次要信息 */
+#song-artist {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    color: #a0a0a0;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    transition: color 0.2s ease;
+}
+
+/* 悬停效果增强 */
+.song-info:hover #song-title {
+    color: #ffffff;
+}
+
+.song-info:hover #song-artist {
+    color: #cccccc;
+}
+
+/* 进度条 - 极简现代设计 */
+.progress-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+    gap: 12px;
+}
+
+/* 时间显示 - 精确清晰 */
+#current-time,
+#total-time {
+    font-size: 0.75rem;
+    color: #757575;
+    min-width: 40px;
+    text-align: center;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.05em;
+    transition: color 0.2s ease;
+}
+
+.progress-container:hover #current-time,
+.progress-container:hover #total-time {
+    color: #9e9e9e;
+}
+
+.progress-bar {
+    flex: 1;
+    height: var(--progress-height);
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: calc(var(--progress-height) / 2);
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.progress-bar:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, #1db954, #1ed760);
+    border-radius: calc(var(--progress-height) / 2);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: width 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    /* 进度条脉冲效果 */
+    animation: progressPulse 2s infinite;
+    animation-play-state: paused;
+}
+
+.album-cover.playing + .song-info + .progress-container .progress {
+    animation-play-state: running;
+}
+
+@keyframes progressPulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.85;
+    }
+}
+
+.progress-handle {
+    width: var(--handle-size);
+    height: var(--handle-size);
+    background: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+}
+
+.progress-bar:hover .progress-handle {
+    opacity: 1;
+}
+
+.progress-handle:hover {
+    transform: translate(-50%, -50%) scale(1.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* 控制按钮 - 优化交互效果 */
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.control-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+.control-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.control-btn:hover::before {
+    left: 100%;
+}
+
+.control-btn:active {
+    transform: translateY(-1px) scale(0.98);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* 播放按钮优化 */
+.play-btn {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #1db954, #1ed760);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 8px 25px rgba(29, 185, 84, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.play-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.play-btn:hover {
+    background: linear-gradient(135deg, #1aa34a, #1db954);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 10px 30px rgba(29, 185, 84, 0.5);
+}
+
+.play-btn:hover::before {
+    left: 100%;
+}
+
+.play-btn:active {
+    transform: translateY(-1px) scale(0.98);
+    box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
+}
+
+.control-btn.active {
+    color: #1db954;
+    background: rgba(29, 185, 84, 0.1);
+    border-color: rgba(29, 185, 84, 0.3);
+}
+
+/* 音量控制 - 极简设计 */
+.volume-container {
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#volume-slider {
+    width: 100%;
+    height: var(--volume-height);
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: calc(var(--volume-height) / 2);
+    outline: none;
+    transition: background-color 0.2s ease;
+    position: relative;
+}
+
+#volume-slider::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--volume-percentage, 70%);
+    height: 100%;
+    background: linear-gradient(90deg, #1db954, #1ed760);
+    border-radius: calc(var(--volume-height) / 2);
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#volume-slider:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: var(--volume-handle-size);
+    height: var(--volume-handle-size);
+    background: #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+}
+
+#volume-slider:hover::-webkit-slider-thumb {
+    opacity: 1;
+}
+
+#volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+#volume-slider::-moz-range-thumb {
+    width: var(--volume-handle-size);
+    height: var(--volume-handle-size);
+    background: #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+}
+
+#volume-slider:hover::-moz-range-thumb {
+    opacity: 1;
+}
+
+#volume-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* 播放列表 - 优化字体显示 */
+.playlist-container {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 36px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 20px;
+}
+
+/* 播放列表标题 - 分类清晰 */
+.playlist-container h3 {
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+    color: #ffffff;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+/* 播放列表项目 - 优化字体结构 */
+.playlist li {
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid transparent;
+    color: #cccccc;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.3;
+    transform-origin: left center;
+    animation: listItemFadeIn 0.4s ease-out;
+    /* 增强触摸反馈 */
+    -webkit-tap-highlight-color: transparent;
+    min-height: 50px;
+}
+
+@keyframes listItemFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* 隐藏滚动条但保留滚动功能 */
+.playlist-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.playlist-container::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+}
+
+.playlist {
+    list-style: none;
+}
+
+.playlist li {
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid transparent;
+    color: #cccccc;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.playlist li:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.playlist li.active {
+    background: rgba(29, 185, 84, 0.2);
+    color: #ffffff;
+    border-color: rgba(29, 185, 84, 0.3);
+    font-weight: 500;
+}
+
+/* 歌曲时长 - 优化数字显示 */
+.playlist li .song-duration {
+    font-size: 0.75rem;
+    color: #666666;
+    min-width: 40px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+.playlist li:hover .song-duration {
+    color: #9e9e9e;
+}
+
+.playlist li.active .song-duration {
+    color: #b3b3b3;
+}
+
+/* 响应式设计 - 移动设备优化 */
+
+/* 小屏幕移动设备优化 (280px-360px) */
+@media (max-width: 360px) {
+    body {
+        padding: 12px;
+        overflow: auto;
+        min-height: 100vh;
+    }
+    
+    :root {
+        --player-padding: 24px 16px;
+        --control-btn-size: 36px;
+        --play-btn-size: 50px;
+    }
+    
+    .music-player {
+        margin: 0;
+        padding: var(--player-padding);
+        border-radius: 20px;
+        width: 100%;
+        max-width: none;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .album-cover {
+        width: 85%;
+        margin-bottom: 24px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .song-info {
+        margin-bottom: 20px;
+        padding: 12px;
+        border-radius: 12px;
+    }
+    
+    #song-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+    
+    #song-artist {
+        font-size: 0.85rem;
+    }
+    
+    .progress-container {
+        margin-bottom: 20px;
+        gap: 8px;
+    }
+    
+    #current-time,
+    #total-time {
+        font-size: 0.7rem;
+        min-width: 35px;
+    }
+    
+    .controls {
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+    
+    .control-btn {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .control-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .play-btn {
+        width: 50px;
+        height: 50px;
+        box-shadow: 0 6px 20px rgba(29, 185, 84, 0.4);
+    }
+    
+    .play-btn svg {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .volume-container {
+        margin-bottom: 20px;
+        gap: 10px;
+    }
+    
+    .playlist-container {
+        margin-top: 24px;
+        max-height: 180px;
+    }
+    
+    .playlist-container h3 {
+        font-size: 0.85rem;
+        margin-bottom: 12px;
+    }
+    
+    .playlist li {
+        padding: 12px 14px;
+        margin-bottom: 6px;
+        font-size: 0.85rem;
+    }
+    
+    .playlist li .song-duration {
+        font-size: 0.7rem;
+    }
+}
+
+/* 中等屏幕移动设备优化 (361px-480px) */
+@media (min-width: 361px) and (max-width: 480px) {
+    body {
+        padding: 16px;
+        overflow: auto;
+        min-height: 100vh;
+    }
+    
+    :root {
+        --player-padding: 28px 20px;
+        --control-btn-size: 40px;
+        --play-btn-size: 56px;
+    }
+    
+    .music-player {
+        margin: 0;
+        padding: var(--player-padding);
+        border-radius: 24px;
+        width: 100%;
+        max-width: none;
+    }
+    
+    .album-cover {
+        width: 80%;
+        margin-bottom: 28px;
+    }
+    
+    .song-info {
+        margin-bottom: 24px;
+        padding: 14px;
+    }
+    
+    #song-title {
+        font-size: 1.35rem;
+    }
+    
+    .progress-container {
+        margin-bottom: 24px;
+        gap: 10px;
+    }
+    
+    .controls {
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+    
+    .control-btn {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .play-btn {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .volume-container {
+        margin-bottom: 24px;
+    }
+    
+    .playlist-container {
+        margin-top: 28px;
+        max-height: 200px;
+    }
+}
+
+/* 平板设备优化 (481px-768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    body {
+        padding: 20px;
+    }
+    
+    .music-player {
+        max-width: 420px;
+        margin: 0 auto;
+    }
+}
+
+/* 移动设备上的触摸反馈优化 */
+@media (hover: none) and (pointer: coarse) {
+    /* 确保控件在触摸设备上更容易点击 */
+    .control-btn,
+    .play-btn,
+    .progress-bar,
+    #volume-slider,
+    .playlist li {
+        touch-action: manipulation;
+    }
+    
+    /* 增强触摸反馈 */
+    .control-btn:active {
+        transform: scale(0.95);
+        background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .play-btn:active {
+        transform: scale(0.95);
+        box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
+    }
+    
+    .playlist li:active {
+        transform: scale(0.98);
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* 确保滑块在移动设备上始终可见 */
+    .progress-handle,
+    #volume-slider::-webkit-slider-thumb,
+    #volume-slider::-moz-range-thumb {
+        opacity: 1 !important;
+    }
+    
+    /* 增大滑块尺寸便于触摸 */
+    .progress-handle {
+        width: 16px !important;
+        height: 16px !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+    }
+    
+    #volume-slider::-webkit-slider-thumb,
+    #volume-slider::-moz-range-thumb {
+        width: 14px !important;
+        height: 14px !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* 增加进度条和音量条的高度便于触摸 */
+    .progress-bar {
+        height: 5px !important;
+    }
+    
+    #volume-slider {
+        height: 4px !important;
+    }
+    
+    /* 为触摸设备优化字体大小和间距 */
+    #song-title,
+    #song-artist,
+    .playlist li {
+        letter-spacing: 0.02em;
+    }
+}
+
+/* 横屏模式优化 */
+@media (orientation: landscape) and (max-height: 500px) {
+    body {
+        overflow: auto;
+    }
+    
+    .music-player {
+        padding: 20px;
+    }
+    
+    .album-cover {
+        width: 50%;
+        max-width: 200px;
+        margin: 0 auto 20px;
+    }
+    
+    .playlist-container {
+        max-height: 120px;
+    }
+}
