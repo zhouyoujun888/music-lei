@@ -160,12 +160,17 @@ function setProgress(e) {
     audioPlayer.currentTime = (clickX / width) * duration;
 }
 
-// 更新播放列表高亮
+// 更新播放列表高亮并滚动到当前播放歌曲
 function updatePlaylistHighlight() {
     const playlistItems = playlistEl.querySelectorAll('li');
     playlistItems.forEach((item, index) => {
         if (index === currentSongIndex) {
             item.classList.add('active');
+            // 滚动当前播放歌曲到视图顶部
+            item.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
         } else {
             item.classList.remove('active');
         }
