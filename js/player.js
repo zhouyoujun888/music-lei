@@ -71,6 +71,9 @@ function loadSong(index) {
     // 更新背景（如果有）
     if (song.background) {
         playerContainer.style.backgroundImage = `url(${song.background})`;
+        playerContainer.style.backgroundRepeat = 'no-repeat';
+        playerContainer.style.backgroundSize = 'cover';
+        playerContainer.style.backgroundPosition = 'center';
     }
     
     // 更新播放列表高亮
