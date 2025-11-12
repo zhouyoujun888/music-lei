@@ -750,14 +750,28 @@ body {
     }
 }
 
-/* 隐藏滚动条但保留滚动功能 */
+/* 显示滚动条，让用户知道可以滚动查看更多歌曲 */
 .playlist-container {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: auto;  /* IE and Edge */
+    scrollbar-width: thin;  /* Firefox */
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 
 .playlist-container::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari and Opera */
+    width: 6px;  /* Chrome, Safari and Opera */
+}
+
+.playlist-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.playlist-container::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.playlist-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .playlist {
